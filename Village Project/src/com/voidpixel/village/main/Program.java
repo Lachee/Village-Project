@@ -25,6 +25,8 @@ public class Program extends JFrame implements Runnable{
 	public Program() {
 		super(TITLE + ": LOADING");
 		
+		System.out.println("Random Change");
+		
 		canvas = new Canvas(this);
 		this.setContentPane(canvas);
 		
