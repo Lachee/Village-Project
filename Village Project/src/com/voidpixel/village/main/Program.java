@@ -24,9 +24,7 @@ public class Program extends JFrame implements Runnable{
 	
 	public Program() {
 		super(TITLE + ": LOADING");
-		
-		System.out.println("Random Change");
-		
+				
 		canvas = new Canvas(this);
 		this.setContentPane(canvas);
 		
@@ -37,11 +35,16 @@ public class Program extends JFrame implements Runnable{
 	}
 	
 	public static void main(String[] args) {
+		System.out.println("Loading Program...");
+		
 		Program program = new Program();
 		program.setSize(WIDTH, HEIGHT);
 		program.setLocationRelativeTo(null);
 		program.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		program.setVisible(true);
+		
+
+		System.out.println("Loading Finished");
 	}
 	
 	public void render() {
