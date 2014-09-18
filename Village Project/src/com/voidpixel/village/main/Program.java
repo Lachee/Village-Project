@@ -44,7 +44,7 @@ public class Program extends JFrame implements Runnable{
 		program.setVisible(true);
 		
 
-		System.out.println("Loading Finished");
+		System.out.println("Loading Finished.");
 	}
 	
 	public void render() {

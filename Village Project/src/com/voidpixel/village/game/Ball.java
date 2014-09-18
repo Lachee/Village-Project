@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import com.voidpixel.village.game.interfaces.GameElement;
 import com.voidpixel.village.main.Canvas;
 
 public class Ball implements GameElement{

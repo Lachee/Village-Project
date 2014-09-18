@@ -1,4 +1,4 @@
-package com.voidpixel.village.game;
+package com.voidpixel.village.game.interfaces;
 
 import java.awt.Graphics;
 
