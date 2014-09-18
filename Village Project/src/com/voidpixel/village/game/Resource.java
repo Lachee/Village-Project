@@ -1,5 +1,6 @@
 package com.voidpixel.village.game;
 
+//This is the resource class
 public class Resource {
 	public String name;
 	private int amount;
