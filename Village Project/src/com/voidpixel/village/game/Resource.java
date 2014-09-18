@@ -3,6 +3,11 @@ package com.voidpixel.village.game;
 public class Resource {
 	public String name;
 	private int amount;
+
+	public Resource(String name) {
+		this.name = name;
+		this.amount = 0;
+	}
 	
 	public Resource(String name, int amount) {
 		this.name = name;
