@@ -1,6 +1,5 @@
 package com.voidpixel.village.game;
 
-//This is a test change!
 public class Resource {
 	public String name;
 	private int amount;
