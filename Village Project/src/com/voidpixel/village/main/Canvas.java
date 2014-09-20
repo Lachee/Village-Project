@@ -1,6 +1,5 @@
 package com.voidpixel.village.main;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 

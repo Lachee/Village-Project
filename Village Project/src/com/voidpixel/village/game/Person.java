@@ -1,6 +1,10 @@
-package com.voidpixel.village.person;
+package com.voidpixel.village.game;
 
-import com.voidpixel.village.game.Resource;
+import java.awt.Graphics;
+
+import com.voidpixel.village.main.Canvas;
+import com.voidpixel.village.world.World;
+
 
 public class Person {
 	public int x, y;
@@ -19,5 +23,9 @@ public class Person {
 		storedWood = new Resource("Wood");
 		storedMetal = new Resource("Metal");
 		storedStone = new Resource("Stone");
+	}
+	
+	public void render(Graphics g) {
+		g.drawString(symbol + "", x * World.scale, y * World.scale);
 	}
 }
