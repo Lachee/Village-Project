@@ -9,8 +9,18 @@ import com.voidpixel.village.world.World;
 
 public class MainGame{
 	
+	//Make this a singleton
+	public static MainGame instance;
+	
 	public Program program;
 	public Canvas canvas;
+	
+	//How long (in seconds) a tick should be.
+	public double tickRate = 0;
+	protected long tickStart = 0;
+	
+	protected int frameCount = 0;
+	public boolean secondFlash = false;
 	
 	public ArrayList<Person> people = new ArrayList<Person>();
 	
@@ -19,6 +29,8 @@ public class MainGame{
 	public Resource collectiveFood, collectiveWood, collectiveMetal, collectiveStone, collectiveScience;
 	
 	public MainGame(Program program, Canvas canvas) {
+		MainGame.instance = this;
+		
 		this.program = program;
 		this.canvas = canvas;
 
@@ -29,12 +41,39 @@ public class MainGame{
 		collectiveScience = new Resource("Science", 0);
 		
 		world = new World(Program.WIDTH / 10, Program.HEIGHT / 10);
+
+		for(int i = 0; i < 5; i++)
+			people.add(new Person(this, 1 + i, 1));
 		
-		people.add(new Person(10, 10, 'P', "Bob F Jones"));
-		
+		//TODO: Implement the main feature of this program...
+		//tick(n);
 	}
 	
 	public void update(double delta) {
+		frameCount++;
+		if(frameCount >= program.framerate) {
+			secondFlash = !secondFlash;
+			frameCount = 0;
+		}
+		
+		for(Person person : people) 
+			person.update(delta);
+		
+		if(System.nanoTime() - tickStart >= tickRate * 1e9) {
+			tickStart = System.nanoTime();
+			tick();
+		}
+
+	}
+	
+	public void tick() { 
+		for(Person person : people) 
+			person.tick();
+	}
+	
+	public void tick(int n) {
+		for(int i = 0; i < n; i++)
+			tick();
 	}
 	
 	public void render(Graphics g) {
@@ -53,6 +92,7 @@ public class MainGame{
 		for(Person person : people) {
 			person.render(g);
 		}	
+		
 	}
 	
 }

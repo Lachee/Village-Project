@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-import com.voidpixel.village.tiles.Tile;
+import com.voidpixel.village.tiles.*;
 
 public class World {
 	public int[][] map;
@@ -18,16 +18,17 @@ public class World {
 	
 	public static Tile grass = new Tile(0, "Grass", Color.green.brighter().brighter());
 	public static Tile stone = new Tile(1, "Stone", Color.gray);
-	public static Tile tree = new Tile(2, "Trees", Color.green.darker());
-	public static Tile settlements = new Tile(3, "Settlement", Color.darkGray);
+	public static Tile settlement = new Tile(2, "Settlement", Color.darkGray);
+	public static TileResource tree = new TileResource(3, "Trees", "Wood", 50, 100, Color.green.darker());
 	
 	public WorldGen[] worldBrushes = new WorldGen[] { new WorldGenForest() };
 	
 	public World(int width, int height) {
 		this.width = width;
 		this.height = height;
-		
+
 		map = new int[this.width][this.height];
+		meta = new int[this.width][this.height];
 		
 		Random rand = new Random();
 		long seed = rand.nextLong();
@@ -36,15 +37,11 @@ public class World {
 		System.out.println("Generating World");
 		for(WorldGen brush : worldBrushes) {
 			
-			System.out.println(" - Generating Brush " + brush.toString());
+			System.out.println(" - Generating Brush \"" + brush.toString() + "\"");
 			
 			long stime = System.nanoTime();
-			
-			for(int x = 0; x < width; x++) {
-				for(int y = 0; y < height; y++) {
-					brush.Generate(this, rand, x, y);
-				}
-			}	
+
+			brush.generate(this, rand);
 			
 			long dtime = System.nanoTime() - stime;
 			if(dtime > 1e9/2)
@@ -53,6 +50,8 @@ public class World {
 			System.out.println(" -- Done in " + ((double)dtime / (double)1e9) + "s");
 			
 		}
+		
+		map[10][10] = World.settlement.id;
 		
 		System.out.println("World created with seed " + seed);
 	}
@@ -76,5 +75,20 @@ public class World {
 				g.fillRect(x * World.scale, y * World.scale, World.scale, World.scale);
 			}
 		}
+	}
+
+	public void setTile(int x, int y, int id) {
+		if(x >= width || x < 0 || y >= height || y < 0) return;
+		this.map[x][y] = id;	
+	}
+	
+	public void setMetadata(int x, int y, int meta) { 
+		if(x >= width || x < 0 || y >= height || y < 0) return;
+		this.meta[x][y] = meta;	
+	}
+	
+	public int getMetadata(int x, int y) {
+		if(x >= width || x < 0 || y >= height || y < 0) return 0;
+		return meta[x][y];
 	}
 }
