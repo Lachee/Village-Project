@@ -3,7 +3,6 @@ package com.voidpixel.village.tiles;
 import java.awt.Color;
 import java.util.Random;
 
-import com.voidpixel.village.game.Person;
 import com.voidpixel.village.game.Resource;
 import com.voidpixel.village.world.World;
 
@@ -19,6 +18,7 @@ public class TileResource extends Tile{
 		
 		this.minStart = minStart;
 		this.maxStart = maxStart;		
+		
 	}
 	
 	public int getStartingAmount() {
@@ -46,4 +46,15 @@ public class TileResource extends Tile{
 		return world.getMetadata(x, y);
 	}
 
+	@Override
+	public Color getColor(World world, int x, int y) { 
+		if(world.getTile(x, y+1) == null || world.getTile(x, y+1).getID() != getID()) return new Color(color.getRed(), color.getGreen(), color.getBlue()).darker();
+		
+		Color c =  new Color(color.getRed(), color.getGreen(), color.getBlue());
+
+		int index = x+(y*world.width)+(x * world.height * y);
+		Random rand = new Random(index);
+		return rand.nextDouble() <= 0.02 ? c.brighter(): c;
+	}
+	
 }

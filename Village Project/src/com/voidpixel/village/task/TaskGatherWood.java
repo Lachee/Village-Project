@@ -46,7 +46,7 @@ public class TaskGatherWood implements PersonTask{
 			treeAttempts = 0;
 		
 			//if we are at the tree and it is a tree, gather some of it's resources.
-			if(person.x == targetTree.x && person.y == targetTree.y) {
+			if(person.getX() == targetTree.x && person.getY() == targetTree.y) {
 				Resource resource = World.tree.gatherResources(game.world, targetTree.x, targetTree.y, 1);
 				person.storedWood.add(resource);
 			}
@@ -66,8 +66,8 @@ public class TaskGatherWood implements PersonTask{
 		targetTree = null;
 
 		Random rand = new Random();
-		int cx = person.x + (rand.nextInt(4) - 2);
-		int cy = person.y + (rand.nextInt(4) - 2);
+		int cx = person.getX() + (rand.nextInt(4) - 2);
+		int cy = person.getY() + (rand.nextInt(4) - 2);
 		
 		for(Person fellowPerson : game.people) {
 			if(fellowPerson.tasks.size() == 0 || fellowPerson.tasks.get(0).getName() != this.getName()) continue;

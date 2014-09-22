@@ -33,4 +33,14 @@ public class Resource {
 			resource.empty();
 		}	
 	}
+	public void add(Resource resource, int amount) {
+		if(resource.name == this.name) {
+			int available = resource.getAmount();
+			int newAmount = available - amount; if(newAmount < 0) newAmount = 0;
+			int gathered = available - newAmount;
+			
+			this.add(gathered);
+			resource.remove(gathered);
+		}
+	}
 }

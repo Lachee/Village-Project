@@ -2,7 +2,7 @@ package com.voidpixel.village.world;
 
 import java.util.Random;
 
-public class WorldGenForest implements WorldGen{
+public class WorldGenWheat implements WorldGen{
 
 	@Override
 	public void generate(World world, Random rand) {
@@ -12,12 +12,11 @@ public class WorldGenForest implements WorldGen{
 			}
 		}
 	}
-	
+
 	public void generateTile(World world, Random rand, int x, int y) {
-		
-		if(x < world.width / 2) return;
-		if(rand.nextDouble() > 0.02) return;
-		
+
+		if(x > world.width / 2 || y < world.height / 2) return;
+		if(rand.nextDouble()*100 >= 0.5) return;	
 		
 		for(int r = rand.nextInt(5) + 5; r > 0; r--) {
 			
@@ -26,16 +25,16 @@ public class WorldGenForest implements WorldGen{
 				int nx = (int) (x + r * Math.cos(angle));
 				int ny = (int) (y + r * Math.sin(angle));
 				if(nx >= world.width || nx < 0 || ny >= world.height || ny < 0) continue;
-				world.map[nx][ny] = World.tree.id;
-				world.meta[nx][ny] = World.tree.getStartingAmount();
+				world.map[nx][ny] = World.wheat.id;
+				world.meta[nx][ny] = World.wheat.getStartingAmount();
 			}
 			
 		}
 	}
 	
 	@Override
-	public String getName() { 
-		return "Forest Circles";
+	public String getName() {
+		return "Wheat";
 	}
 
 }

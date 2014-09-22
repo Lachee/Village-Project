@@ -16,12 +16,12 @@ public class World {
 
 	public static Tile[] tiles = new Tile[256];
 	
-	public static Tile grass = new Tile(0, "Grass", Color.green.brighter().brighter());
-	public static Tile stone = new Tile(1, "Stone", Color.gray);
+	public static Tile grass = new Tile(0, "Grass", new Color(60, 84, 48));
+	public static Tile stone = new Tile(1, "Stone", Color.gray, 0.25);
 	public static Tile settlement = new Tile(2, "Settlement", Color.darkGray);
-	public static TileResource tree = new TileResource(3, "Trees", "Wood", 50, 100, Color.green.darker());
+	public static TileTree tree = new TileTree(3, "Trees", 50, 100);
+	public static TileResource wheat = new TileResource(4, "Wheat","Food", 25, 50, new Color(180, 170, 103));
 	
-	public WorldGen[] worldBrushes = new WorldGen[] { new WorldGenForest() };
 	
 	public World(int width, int height) {
 		this.width = width;
@@ -35,9 +35,16 @@ public class World {
 		rand.setSeed(seed);
 
 		System.out.println("Generating World");
+		
+		WorldGen[] worldBrushes = new WorldGen[] { 
+				new WorldGenForest(), 
+				new WorldGenWheat(),  
+				new WorldGenTest() 
+		};
+		
 		for(WorldGen brush : worldBrushes) {
 			
-			System.out.println(" - Generating Brush \"" + brush.toString() + "\"");
+			System.out.println(" - Generating Brush \"" + brush.getName() + "\"");
 			
 			long stime = System.nanoTime();
 
@@ -63,16 +70,17 @@ public class World {
 	
 	public void render(Graphics g) {
 		//TODO: Only render within bounds
-		for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
+		for(int y = 0; y < height; y++) { 
+			for(int x = 0; x < width; x++) {
 				Tile t = getTile(x,y);				
 
-				if(t == null)
+				if(t == null) {
 					g.setColor(Color.magenta);
-				else
-					g.setColor(t.color);
+					g.fillRect(x * World.scale, y * World.scale, World.scale, World.scale);
+				}else{
+					t.render(g, this, x, y, World.scale);
+				}
 				
-				g.fillRect(x * World.scale, y * World.scale, World.scale, World.scale);
 			}
 		}
 	}

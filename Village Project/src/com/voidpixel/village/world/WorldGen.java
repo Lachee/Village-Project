@@ -4,5 +4,5 @@ import java.util.Random;
 
 public interface WorldGen {
 	public void generate(World world, Random rand);
-	public String toString();
+	public String getName();
 }
