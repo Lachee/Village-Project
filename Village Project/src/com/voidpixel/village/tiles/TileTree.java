@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.world.World;
 
 public class TileTree extends TileResource{
@@ -35,11 +36,11 @@ public class TileTree extends TileResource{
 		return lColor;
 	}
 	
-	public void render(Graphics g, World world, int x, int y, int scale) {
-		Color c = this.getColor(world, x, y);
+	public void renderCamera(Camera c, World world, int x, int y, int scale) {
+		Color clr = this.getColor(world, x, y);
 		
-		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 255));
-		g.fillRect(x * scale, y * scale, scale, scale);
+		c.setColor(clr.getRed(), clr.getGreen(), clr.getBlue(), 255);
+		c.fillRect(x * scale, y * scale, scale, scale);
 	}
 	
 }

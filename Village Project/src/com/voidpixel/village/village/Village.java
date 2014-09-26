@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import com.voidpixel.village.game.*;
 import com.voidpixel.village.interfaces.GameElement;
+import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.world.World;
 
 public class Village  implements GameElement{
@@ -37,9 +38,13 @@ public class Village  implements GameElement{
 	}
 
 	@Override
-	public void render(Graphics g) {
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(x * World.scale - World.scale , y * World.scale - World.scale, 3 * World.scale, 3 * World.scale);
+	public void renderCamera(Camera c) {
+		c.setColor(Color.DARK_GRAY);
+		c.fillRect(x * World.scale - World.scale , y * World.scale - World.scale, 3 * World.scale, 3 * World.scale);
+	}
+
+	@Override
+	public void renderGUI(Graphics g) {
 	}
 
 }

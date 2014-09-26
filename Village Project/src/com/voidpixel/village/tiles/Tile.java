@@ -3,6 +3,7 @@ package com.voidpixel.village.tiles;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.world.World;
 
 public class Tile {
@@ -33,9 +34,9 @@ public class Tile {
 	public String getName() { return this.name; }
 	public Color getColor(World world, int x, int y) { return this.color; }
 	
-	public void render(Graphics g, World world, int x, int y, int scale) {
-		g.setColor(this.getColor(world, x, y));
-		g.fillRect(x * scale, y * scale, scale, scale);
+	public void renderCamera(Camera c, World world, int x, int y, int scale) {
+		c.setColor(this.getColor(world, x, y));
+		c.fillRect(x * scale, y * scale, scale, scale);
 	}
 	
 }

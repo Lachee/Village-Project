@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.voidpixel.village.interfaces.*;
+import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.task.PersonTask;
 import com.voidpixel.village.task.TaskGatherWood;
 import com.voidpixel.village.task.TaskStoreResources;
@@ -78,15 +79,15 @@ public class Person  implements GameElement{
 
 
 
-	public void render(Graphics g) {
+	public void renderCamera(Camera c) {
 
 		if(tasks.size() > 0) {
-			g.setColor(new Color(255, 200, 50, 255/2));
-			g.drawRect(tx * World.scale, ty * World.scale, World.scale, World.scale);
+			c.setColor(new Color(255, 200, 50, 255/2));
+			c.drawRect(tx * World.scale, ty * World.scale, World.scale, World.scale);
 		}
 
-		g.setColor(Color.white);
-		g.drawString(symbol + "", getX() * World.scale, (getY()+1) * World.scale);
+		c.setColor(Color.white);
+		c.drawString(symbol + "", getX() * World.scale, (getY()+1) * World.scale);
 
 	}
 
@@ -166,6 +167,11 @@ public class Person  implements GameElement{
 				ty = getY() + rand.nextInt(20) - 10;
 			}
 		}
+	}
+
+
+	@Override
+	public void renderGUI(Graphics g) {
 	}
 }
 

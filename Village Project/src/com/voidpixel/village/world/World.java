@@ -2,8 +2,11 @@ package com.voidpixel.village.world;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Random;
 
+import com.voidpixel.village.main.Camera;
+import com.voidpixel.village.main.Program;
 import com.voidpixel.village.tiles.*;
 
 public class World {
@@ -68,21 +71,37 @@ public class World {
 		return World.tiles[map[x][y]];
 	}
 	
-	public void render(Graphics g) {
+	public void renderCamera(Camera c) {
 		//TODO: Only render within bounds
+	
+		/*
+		int minX = -(int) ((c.getRealX() / 10) * (c.getScale()));
+		int minY = 0;
+		int maxX = minX + (Program.WIDTH / 10);
+		int maxY = minY + (Program.HEIGHT / 10);
+		*/
+		int minX = 0;
+		int minY = 0;
+		int maxX = Program.WIDTH / 10;
+		int maxY = Program.HEIGHT / 10;
 		for(int y = 0; y < height; y++) { 
 			for(int x = 0; x < width; x++) {
-				Tile t = getTile(x,y);				
+				if(x < minX || x > maxX || y < minY || y > maxY) continue;
+				
+				Tile t = getTile(x, y);				
 
 				if(t == null) {
-					g.setColor(Color.magenta);
-					g.fillRect(x * World.scale, y * World.scale, World.scale, World.scale);
+					c.setColor(Color.magenta);
+					c.fillRect(x * World.scale, y * World.scale, World.scale, World.scale);
 				}else{
-					t.render(g, this, x, y, World.scale);
+					t.renderCamera(c, this, x, y, World.scale);
 				}
 				
 			}
 		}
+		
+		c.setColor(86, 63, 41);
+		c.fillRect(0, height * World.scale, width * World.scale, height * World.scale / 4);
 	}
 
 	public void setTile(int x, int y, int id) {

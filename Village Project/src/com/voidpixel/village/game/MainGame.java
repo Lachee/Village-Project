@@ -2,14 +2,20 @@ package com.voidpixel.village.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
+import com.voidpixel.village.interfaces.listeners.InputKeyListener;
+import com.voidpixel.village.interfaces.listeners.InputMouseListener;
 import com.voidpixel.village.main.*;
 import com.voidpixel.village.task.*;
 import com.voidpixel.village.village.Village;
 import com.voidpixel.village.world.World;
 
-public class MainGame{
+public class MainGame implements InputKeyListener, InputMouseListener{
 	
 	//Make this a singleton
 	public static MainGame instance;
@@ -24,6 +30,14 @@ public class MainGame{
 	protected int frameCount = 0;
 	public boolean secondFlash = false;
 	public boolean drawGrid = false;
+	
+	//Mouse Keys
+	public boolean mouseRightButton = false;
+	public boolean mouseLeftButton = false;
+	public boolean mouseMiddleButton = false;
+	public Point mousePosition = new Point();
+	public Point mouseLastPosition = new Point();
+	
 	public ArrayList<Person> people = new ArrayList<Person>();
 	
 	public World world;
@@ -34,6 +48,9 @@ public class MainGame{
 	
 	public MainGame(Program program, Canvas canvas) {
 		MainGame.instance = this;
+		
+		Listener.registerKeyListener(this);
+		Listener.registerMouseListener(this);
 		
 		this.program = program;
 		this.canvas = canvas;
@@ -49,7 +66,7 @@ public class MainGame{
 				people.get(0).setTask(new TaskBuildVillage(), true);
 			}
 		}
-	
+		
 		//TODO: Implement the main feature of this program...
 		//tick(n);
 	}
@@ -74,6 +91,7 @@ public class MainGame{
 		if(frameCount >= program.framerate) {
 			secondFlash = !secondFlash;
 			frameCount = 0;
+			
 		}
 		
 		for(Person person : people) 
@@ -85,6 +103,14 @@ public class MainGame{
 			tickStart = System.nanoTime();
 			tick();
 		}
+		
+		if(mouseMiddleButton) {
+			int x = mousePosition.x - mouseLastPosition.x;
+			int y = mousePosition.y - mouseLastPosition.y;
+			canvas.camera.translate(x, y);
+		}
+		
+		mouseLastPosition = mousePosition;
 
 	}
 	
@@ -100,27 +126,85 @@ public class MainGame{
 			tick();
 	}
 	
-	public void render(Graphics g) {
-		world.render(g);
-		
-		village.render(g);
+	public void renderCamera(Camera c) {
+		world.renderCamera(c);		
+		village.renderCamera(c);
 		
 		if(drawGrid) {
-			g.setColor(new Color(0,0,0,25));
+			c.setColor(new Color(0,0,0,25));
 			for(int x = 0; x < world.width; x++) {
-				g.drawLine(x * World.scale, 0, x * World.scale, world.height * World.scale);
+				c.drawLine(x * World.scale, 0, x * World.scale, world.height * World.scale);
 			}
 			
 			for(int y = 0; y < world.height; y++) {
-				g.drawLine(0, y * World.scale, world.width * World.scale, y * World.scale);
+				c.drawLine(0, y * World.scale, world.width * World.scale, y * World.scale);
 			}
 		}
 		
-		g.setColor(Color.black);
+		c.setColor(Color.black);
 		for(Person person : people) {
-			person.render(g);
+			person.renderCamera(c);
 		}	
 		
 	}
 	
+	
+	public void renderGUI(Graphics g) { }
+
+
+	@Override
+	public void OnKeyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_UP) 
+			canvas.camera.translate(0, 10);
+		if(e.getKeyCode() == KeyEvent.VK_DOWN) 
+			canvas.camera.translate(0, -10);
+		
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) 
+				canvas.camera.translate(10, 0);
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
+			canvas.camera.translate(-10, 0);
+		
+		if(e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET)
+			canvas.camera.zoom(0.1);
+		else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET)
+			canvas.camera.zoom(-0.1);
+	}
+
+	@Override
+	public void OnKeyReleased(KeyEvent e) { }
+
+	@Override
+	public void OnMousePressed(MouseEvent e) { 
+		if(e.getButton() == 1)
+			mouseLeftButton = true;
+		
+		if(e.getButton() == 2)
+			mouseMiddleButton = true;
+		
+		if(e.getButton() == 3)
+			mouseRightButton = true;		
+	}
+
+	@Override
+	public void OnMouseReleased(MouseEvent e) { 
+		if(e.getButton() == 1)
+			mouseLeftButton = false;
+		
+		if(e.getButton() == 2)
+			mouseMiddleButton = false;
+		
+		if(e.getButton() == 3)
+			mouseRightButton = false;
+	}
+
+	@Override
+	public void OnMouseMoved(Point mousePoint) {
+		mousePosition = mousePoint;
+	}
+
+	@Override
+	public void OnMouseScroll(MouseWheelEvent e) {
+		canvas.camera.zoom(-(double)e.getPreciseWheelRotation() / 10.0);
+		if(canvas.camera.getScale() < 0.5) canvas.camera.setScale(0.5);
+	}
 }
