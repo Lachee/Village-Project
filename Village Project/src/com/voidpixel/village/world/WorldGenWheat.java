@@ -26,7 +26,7 @@ public class WorldGenWheat implements WorldGen{
 				int ny = (int) (y + r * Math.sin(angle));
 				if(nx >= world.width || nx < 0 || ny >= world.height || ny < 0) continue;
 				world.map[nx][ny] = World.wheat.id;
-				world.meta[nx][ny] = World.wheat.getStartingAmount();
+				world.meta[nx][ny][0] = World.wheat.getStartingAmount();
 			}
 			
 		}

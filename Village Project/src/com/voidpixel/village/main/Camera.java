@@ -18,15 +18,51 @@ public class Camera {
 		this.canvas = canvas;
 	}
 	
+	public Point worldToScreen(Point p) {
+		double x = p.x * scale + this.x * scale;		
+		double y = p.y * scale + this.y * scale;	
+		
+		
+		return new Point((int)x, (int)y);
+	}
+	
+	
+	public Point screenToWorld(Point p) {
+		
+		double x = (p.x - (this.scale * this.x)) / this.scale;
+		double y = (p.y - (this.scale * this.y)) / this.scale;
+		
+		return new Point((int)x, (int)y);
+	}
+	
 	public double getScale() { return this.scale; }
-	public void setScale(double s) { this.scale = s; if(this.scale < 0.001) this.scale = 0.001; }
-	public void zoom(double amount) { setScale(scale + amount); }
+	public void setScale(double s) { 
+		double so = this.scale;
+		double sn = s < 0.001 ? 0.001 : s;
+		
+		/*
+		 	== What we are basicly doing ==
+			double oWidth = canvas.getWidth() / so;
+			double nWidth = canvas.getWidth() / sn;
+			double xDiff = nWidth - oWidth;
+			this.x += xDiff / 2;
+		*/
+		
+		this.x += ((canvas.getWidth() / sn) - (canvas.getWidth() / so)) / 2;
+		this.y += ((canvas.getHeight() / sn) - (canvas.getHeight() / so)) / 2;
+		
+		this.scale = sn;
+	}
+	
+	public void zoom(double amount) { 
+		setScale(scale + amount); 	
+	}
 
 	public double getRealX() { return this.x; }
 	public double getRealY() { return this.y; }
 	
-	public int getX() { return 0; }//(int) this.x; }
-	public int getY() { return 0; }//(int) this.y; }
+	public int getX() { return (int) this.x; }
+	public int getY() { return (int) this.y; }
 	
 	public void setX(double x) { this.x = x; }
 	public void setY(double y) { this.y = y; }
@@ -45,23 +81,23 @@ public class Camera {
 	
 	//Rectangles
 	public void fillRect(int x, int y, int width, int height) {
-		this.g.fillRect(this.getX() + x, this.getY() + y, width, height);
+		this.g.fillRect(x, y, width, height);
 	}
 	public void drawRect(int x, int y, int width, int height) {
-		this.g.drawRect(this.getX() + x, this.getY() + y, width, height);
+		this.g.drawRect(x, y, width, height);
 	}
 
 	//Line
 	public void drawLine(int x1, int y1, int x2, int y2) {
-		g.drawLine(this.getX() + x1, this.getY() + y1, this.getX() + x2, this.getY() + y2);
+		g.drawLine(x1, y1, x2, y2);
 	}
 	
 	//Cirlces and ovals
 	public void drawOval(int x, int y, int width, int height) {
-		g.drawOval(this.getX() + x, this.getY() + y, width, height) ;
+		g.drawOval(x, y, width, height) ;
 	}	
 	public void fillOval(int x, int y, int width, int height) {
-		g.fillOval(this.getX() + x, this.getY() + y, width, height) ;
+		g.fillOval(x, y, width, height) ;
 	}
 	public void drawCircle(int x, int y, int radius) {
 		this.drawOval(x - radius, y - radius, radius * 2, radius * 2);
@@ -72,7 +108,7 @@ public class Camera {
 	
 	//String. These get scaled too as a warning
 	public void drawString(String string, int x, int y) {
-		g.drawString(string, this.getX() + x, this.getY() + y);
+		g.drawString(string, x, y);
 	}
 	
 	public Rectangle getClipBounds() {

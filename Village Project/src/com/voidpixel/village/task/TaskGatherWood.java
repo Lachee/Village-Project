@@ -108,7 +108,7 @@ public class TaskGatherWood implements PersonTask{
 
 	@Override
 	public void endTask(Person person) {
-		System.out.println(person.name + " has finished chooping wood down");
+		//System.out.println(person.name + " has finished chooping wood down");
 	}
 
 	@Override

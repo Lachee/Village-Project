@@ -7,11 +7,13 @@ public class TaskStoreResources implements PersonTask{
 	
 	@Override
 	public void endTask(Person person) {
+		/*
 		System.out.println(person.name + " has stored their resources. Total now at: ");
 		System.out.println(" - " + person.game.village.collectiveFood.getAmount() + " food");
 		System.out.println(" - " + person.game.village.collectiveMetal.getAmount() + " metal");
 		System.out.println(" - " + person.game.village.collectiveStone.getAmount() + " stone");
 		System.out.println(" - " + person.game.village.collectiveWood.getAmount() + " wood");
+		*/
 	}
 
 	@Override

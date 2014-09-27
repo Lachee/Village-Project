@@ -35,7 +35,7 @@ public class TileResource extends Tile{
 		int newAmount = available - amount; if(newAmount < 0) newAmount = 0;
 		int gathered = available - newAmount;
 		
-		world.setMetadata(x, y, newAmount);
+		world.setMetadata(x, y, 0, newAmount);
 		if(newAmount == 0)
 			world.setTile(x, y, 0);
 		
@@ -43,18 +43,8 @@ public class TileResource extends Tile{
 	}
 	
 	public int getResources(World world, int x, int y) {
-		return world.getMetadata(x, y);
+		return world.getMetadata(x, y, 0);
 	}
-
-	@Override
-	public Color getColor(World world, int x, int y) { 
-		if(world.getTile(x, y+1) == null || world.getTile(x, y+1).getID() != getID()) return new Color(color.getRed(), color.getGreen(), color.getBlue()).darker();
-		
-		Color c =  new Color(color.getRed(), color.getGreen(), color.getBlue());
-
-		int index = x+(y*world.width)+(x * world.height * y);
-		Random rand = new Random(index);
-		return rand.nextDouble() <= 0.02 ? c.brighter(): c;
-	}
+	
 	
 }

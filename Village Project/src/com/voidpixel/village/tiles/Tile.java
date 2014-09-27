@@ -39,4 +39,6 @@ public class Tile {
 		c.fillRect(x * scale, y * scale, scale, scale);
 	}
 	
+	public void OnNeighbourUpdate(World world, int x, int y, TileUpdateType type) { }
+	
 }

@@ -28,6 +28,8 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 	protected long tickStart = 0;
 	
 	protected int frameCount = 0;
+	
+	
 	public boolean secondFlash = false;
 	public boolean drawGrid = false;
 	
@@ -35,6 +37,11 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 	public boolean mouseRightButton = false;
 	public boolean mouseLeftButton = false;
 	public boolean mouseMiddleButton = false;
+	
+	//Camera Controll
+	public double minZoom = 2.5;
+	public double maxZoom = 0.25;
+	
 	public Point mousePosition = new Point();
 	public Point mouseLastPosition = new Point();
 	
@@ -55,7 +62,7 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 		this.program = program;
 		this.canvas = canvas;
 		
-		world = new World(Program.WIDTH / 10, Program.HEIGHT / 10);
+		world = new World(250, 250); //Program.WIDTH / 10, Program.HEIGHT / 10);
 
 		village = new Village(this, 10, 10);
 		
@@ -149,7 +156,9 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 	}
 	
 	
-	public void renderGUI(Graphics g) { }
+	public void renderGUI(Graphics g) {
+		g.drawString("Test", 10, 10);
+	}
 
 
 	@Override
@@ -205,6 +214,9 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 	@Override
 	public void OnMouseScroll(MouseWheelEvent e) {
 		canvas.camera.zoom(-(double)e.getPreciseWheelRotation() / 10.0);
-		if(canvas.camera.getScale() < 0.5) canvas.camera.setScale(0.5);
+		
+		//Confusing? Yes! But there is a reason for it! zoom = 1 / scale!
+		if(canvas.camera.getScale() < maxZoom) canvas.camera.setScale(maxZoom);
+		if(canvas.camera.getScale() > minZoom) canvas.camera.setScale(minZoom);
 	}
 }

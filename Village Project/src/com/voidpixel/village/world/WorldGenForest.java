@@ -27,7 +27,7 @@ public class WorldGenForest implements WorldGen{
 				int ny = (int) (y + r * Math.sin(angle));
 				if(nx >= world.width || nx < 0 || ny >= world.height || ny < 0) continue;
 				world.map[nx][ny] = World.tree.id;
-				world.meta[nx][ny] = World.tree.getStartingAmount();
+				world.meta[nx][ny][0] = World.tree.getStartingAmount();
 			}
 			
 		}
