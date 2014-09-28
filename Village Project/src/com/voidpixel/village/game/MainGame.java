@@ -6,9 +6,9 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import com.voidpixel.village.building.Village;
 import com.voidpixel.village.main.*;
 import com.voidpixel.village.task.*;
-import com.voidpixel.village.village.Village;
 import com.voidpixel.village.world.World;
 
 public class MainGame {

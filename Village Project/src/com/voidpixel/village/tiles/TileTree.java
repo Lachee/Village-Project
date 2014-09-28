@@ -64,6 +64,7 @@ public class TileTree extends TileResource{
 		
 		c.setColor(clr.getRed(), clr.getGreen(), clr.getBlue(), 255);
 		c.fillRect(x * scale, y * scale, scale, scale);
+		//c.drawImage("tile_tree", x * scale, (y-1) * scale, scale, scale*2);
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package com.voidpixel.village.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -105,6 +106,21 @@ public class Camera {
 	public void fillCircle(int x, int y, int radius) {
 		this.fillOval(x - radius, y - radius, radius * 2, radius * 2);
 	}
+	
+	//Images
+	public void drawImage(Image image, int x, int y) {
+		g.drawImage(image, x, y, null);
+	}
+	public void drawImage(Image image, int x, int y, int width, int height) {
+		g.drawImage(image, x, y, width, height, null);
+	}
+	public void drawImage(String image, int x, int y) {
+		drawImage(GameResources.getImage(image), x, y);
+	}
+	public void drawImage(String image, int x, int y, int width, int height) {
+		drawImage(GameResources.getImage(image), x, y, width, height);
+	}
+	
 	
 	//String. These get scaled too as a warning
 	public void drawString(String string, int x, int y) {

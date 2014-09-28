@@ -20,15 +20,17 @@ public class GameResources {
 	
 	public static Image loadImage(String name, String path) {
 		String fullPath = GameResources.getResourceFolder() + path;
+		System.out.println("Loading resource " + name + " [" + fullPath + "]");
 		
 		try{			
 			Image img = ImageIO.read(new File(fullPath));
 			if(img != null) {
+				System.out.println(" - done");
 				imageResources.put(name, img);
 				return img;
 			}
 		}catch(Exception e) {
-			System.err.println("Could not load " + name + ": " + e.getMessage() + " ["+ fullPath +"]");
+			System.err.println(" - could not load " + name + ": " + e.getMessage() + " ["+ fullPath +"]");
 		}
 			
 		imageResources.put(name, null);

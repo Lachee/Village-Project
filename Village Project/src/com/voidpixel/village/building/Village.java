@@ -1,4 +1,4 @@
-package com.voidpixel.village.village;
+package com.voidpixel.village.building;
 
 import java.awt.Color;
 import java.awt.Graphics;

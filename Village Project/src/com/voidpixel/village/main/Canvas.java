@@ -73,18 +73,23 @@ public class Canvas extends JComponent{
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		
 		g2d.drawImage(GameResources.getImage("skybox"), 0, 0, getWidth(), getHeight(), null);
-		
+
 		AffineTransform otx = g2d.getTransform();
 		
 		//Transform the graphics so we scale in the middle
 		g2d.scale(camera.scale, camera.scale);
 		g2d.translate(camera.x, camera.y);
-		
+
 		camera.setGraphics(g2d);		
 		program.game.renderCamera(camera);
 
 		//Revert the transformation
 		g2d.setTransform(otx);
+		
+		//Basic Parallax Code!
+		//g2d.fillRect(camera.getX(), camera.getY(), 10, 10);
+		
+		
 		g2d.dispose();
 	}	
 }

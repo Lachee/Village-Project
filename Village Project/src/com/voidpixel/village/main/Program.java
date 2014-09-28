@@ -88,6 +88,17 @@ public class Program extends JFrame implements ThreadListener {
 	public void update(double delta) {
 		game.update(delta);
 	}
+	
+	
+	public static void breakProgram() {
+		try {
+			double answer = 42 / 0;
+			System.out.println("All these squares make a circle x" + answer);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	@Override
 	public void threadTick(GameThread thread, double delta) {
