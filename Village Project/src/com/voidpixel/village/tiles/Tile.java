@@ -1,7 +1,6 @@
 package com.voidpixel.village.tiles;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.world.World;

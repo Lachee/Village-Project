@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
@@ -12,33 +11,18 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import com.voidpixel.village.world.World;
-
 public class Canvas extends JComponent{
 	private static final long serialVersionUID = 1L;
 
 	public Program program;
 	public Image screenCamera, screenGUI;
-	public Image skybox;
-	
 	public Camera camera;
-	
-	
-	
+		
 	public Canvas(Program program){
 		this.program = program;
 		createScreen();
 		
 		camera = new Camera(this);
-		
-		try {
-			if(new File("./bin/resources/skybox.png").exists())
-				System.out.println("File Exist");
-			
-			skybox = ImageIO.read(new File("./bin/resources/skybox.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void createScreen() {
@@ -88,7 +72,7 @@ public class Canvas extends JComponent{
 		g2d.setColor(Color.black);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		
-		if(skybox != null) g2d.drawImage(skybox, 0, 0, getWidth(), getHeight(), null);
+		g2d.drawImage(Resource.getImage("skybox"), 0, 0, getWidth(), getHeight(), null);
 		
 		AffineTransform otx = g2d.getTransform();
 		

@@ -1,7 +1,6 @@
 package com.voidpixel.village.world;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Random;
 
@@ -83,15 +82,7 @@ public class World {
 	}
 	
 	public void renderCamera(Camera c) {
-		//TODO: Only render within bounds
-	
-		/*
-		int minX = -(int) ((c.getRealX() / 10) * (c.getScale()));
-		int minY = 0;
-		int maxX = minX + (Program.WIDTH / 10);
-		int maxY = minY + (Program.HEIGHT / 10);
-		*/
-		
+
 		Point minScreen = c.screenToWorld(new Point(0,0));
 		int minX = minScreen.x / World.scale + (debugMode ? 10 : 0) - 2;
 		int minY = minScreen.y / World.scale + (debugMode ? 10 : 0) - 2;
@@ -120,10 +111,6 @@ public class World {
 			}
 		}
 		
-		/*
-		c.setColor(86, 63, 41);
-		c.fillRect(0, height * World.scale, width * World.scale, height * World.scale / 4);
-		*/
  	}
 
 	public void setTile(int x, int y, int id) {

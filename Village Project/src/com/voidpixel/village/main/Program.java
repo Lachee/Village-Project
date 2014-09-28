@@ -1,8 +1,6 @@
 package com.voidpixel.village.main;
 
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import javax.swing.JFrame;
 
 import com.voidpixel.village.game.MainGame;
@@ -27,7 +25,7 @@ public class Program extends JFrame implements ThreadListener {
 
 	private GameThread gameThread;
 	private GameThread renderThread;
-	private GameThread inputThread;
+	//private GameThread inputThread;
 
 	public Canvas canvas;
 	public MainGame game;
@@ -53,20 +51,21 @@ public class Program extends JFrame implements ThreadListener {
 
 		gameThread = new GameThread(this, "game", TARGET_FRAMERATE);
 		renderThread = new GameThread(this, "render", 0);
-		inputThread = new GameThread(this, "input", 10);
+		//inputThread = new GameThread(this, "input", 10);
 		
 		stats = new DebugStatistic(this, canvas);
 		stats.registerThread(gameThread, Color.red);
 		stats.registerThread(renderThread, Color.green);
-		stats.registerThread(inputThread, Color.blue);
+		//stats.registerThread(inputThread, Color.blue);
 		
 		gameThread.Start();
 		renderThread.Start();
-		inputThread.Start();
+		//inputThread.Start();
 	}
 
 	public static void main(String[] args) {
 		System.out.println("Loading Program...");
+		System.out.println("Working Directory: " + System.getProperty("user.dir"));
 
 		Program program = new Program();
 		program.setSize(WIDTH, HEIGHT);
@@ -88,20 +87,6 @@ public class Program extends JFrame implements ThreadListener {
 
 	public void update(double delta) {
 		game.update(delta);
-		
-
-		if(Input.getKeyDown(KeyEvent.VK_SPACE)) {
-			//System.out.println();
-			System.out.print("Space Pressed!");
-		}
-		
-		if(Input.getKey(KeyEvent.VK_SPACE))
-			System.out.print("!");		
-		
-		if(Input.getKeyUp(KeyEvent.VK_SPACE)) {
-			System.out.println();
-			System.out.println("Space Released!");
-		}
 	}
 
 	@Override
@@ -112,9 +97,9 @@ public class Program extends JFrame implements ThreadListener {
 			Input.update();
 		}
 		
-		if(thread.name == inputThread.name) {
-			//Input.update();
-		}
+		//if(thread.name == inputThread.name) {
+		//	//Input.update();
+		//}
 		
 		if(thread.name == renderThread.name)
 			render();

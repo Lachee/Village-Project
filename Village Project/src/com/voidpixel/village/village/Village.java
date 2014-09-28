@@ -45,6 +45,24 @@ public class Village  implements GameElement{
 
 	@Override
 	public void renderGUI(Graphics g) {
+		
+		g.setColor(new Color(62, 69, 61));
+		g.fillRect(0, 0, game.canvas.getWidth(), 25);
+		
+		fillCircle(g, 50, 20, 25);	//Food
+		fillCircle(g, 150, 20, 25);	//Wood
+		fillCircle(g, 250, 20, 25);	//Metal
+		fillCircle(g, 350, 20, 25);	//Stone
+		
+		g.setColor(Color.white);		
+		g.drawString("x" + collectiveFood.getAmount(), 50 + 20, 20);	//Food
+		g.drawString("x" + collectiveWood.getAmount(), 150 + 20, 20);	//Wood
+		g.drawString("x" + collectiveMetal.getAmount(), 250 + 20, 20);	//Metal
+		g.drawString("x" + collectiveStone.getAmount(), 350 + 20, 20);	//Stone
+	}
+	
+	void fillCircle(Graphics g, int x, int y, int r) {
+		g.fillOval(x - r, y - r, r * 2, r * 2);
 	}
 
 }

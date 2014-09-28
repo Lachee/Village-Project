@@ -152,6 +152,7 @@ public class MainGame {
 	}
 		
 	public void renderGUI(Graphics g) {
+		village.renderGUI(g);
 	}
 
 	public void renderDebug(Graphics g) { 
