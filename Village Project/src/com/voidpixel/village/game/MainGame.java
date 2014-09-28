@@ -175,6 +175,12 @@ public class MainGame {
 		g.drawString("People Count: " + people.size(), 10, 380);
 		g.drawString("Queued Tasks: " + taskQueue.size(), 10, 400);
 		
+		//Players
+		g.setColor(Color.white);
+		g.drawString("=== General ===", 10, 430);		
+		g.setColor(Color.lightGray);		
+		g.drawString("Resource Folder: " + GameResources.getResourceFolder(), 10, 450);
+		
 		
 		//Village
 		g.setColor(Color.white);

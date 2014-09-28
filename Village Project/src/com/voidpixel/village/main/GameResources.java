@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-public class Resource {
+public class GameResources {
 	//I wish to be able to access these images anywhere, no matter what
 	protected static HashMap<String, Image> imageResources = new HashMap<String, Image>();
 	
@@ -19,7 +19,7 @@ public class Resource {
 	}
 	
 	public static Image loadImage(String name, String path) {
-		String fullPath = Resource.getResourceFolder() + path;
+		String fullPath = GameResources.getResourceFolder() + path;
 		
 		try{			
 			Image img = ImageIO.read(new File(fullPath));

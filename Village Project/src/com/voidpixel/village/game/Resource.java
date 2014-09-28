@@ -43,4 +43,5 @@ public class Resource {
 			resource.remove(gathered);
 		}
 	}
+
 }

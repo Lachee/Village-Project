@@ -72,7 +72,7 @@ public class Canvas extends JComponent{
 		g2d.setColor(Color.black);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		
-		g2d.drawImage(Resource.getImage("skybox"), 0, 0, getWidth(), getHeight(), null);
+		g2d.drawImage(GameResources.getImage("skybox"), 0, 0, getWidth(), getHeight(), null);
 		
 		AffineTransform otx = g2d.getTransform();
 		
