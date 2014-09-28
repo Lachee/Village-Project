@@ -180,6 +180,7 @@ public class MainGame {
 		g.drawString("=== General ===", 10, 430);		
 		g.setColor(Color.lightGray);		
 		g.drawString("Resource Folder: " + GameResources.getResourceFolder(), 10, 450);
+		g.drawString("Loaded Resources: " + GameResources.size(), 10, 470);
 		
 		
 		//Village

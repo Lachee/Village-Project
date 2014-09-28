@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import com.voidpixel.village.game.*;
 import com.voidpixel.village.interfaces.GameElement;
 import com.voidpixel.village.main.Camera;
+import com.voidpixel.village.main.GameResources;
 import com.voidpixel.village.world.World;
 
 public class Village  implements GameElement{
@@ -53,12 +54,23 @@ public class Village  implements GameElement{
 		fillCircle(g, 150, 20, 25);	//Wood
 		fillCircle(g, 250, 20, 25);	//Metal
 		fillCircle(g, 350, 20, 25);	//Stone
+
+		drawImageCenter(g, "voidpixel", game.canvas.getWidth() - 42, 13, 32);
 		
 		g.setColor(Color.white);		
 		g.drawString("x" + collectiveFood.getAmount(), 50 + 20, 20);	//Food
 		g.drawString("x" + collectiveWood.getAmount(), 150 + 20, 20);	//Wood
 		g.drawString("x" + collectiveMetal.getAmount(), 250 + 20, 20);	//Metal
 		g.drawString("x" + collectiveStone.getAmount(), 350 + 20, 20);	//Stone
+
+		drawImageCenter(g, "resource_food", 50, 25, 20);
+		drawImageCenter(g, "resource_wood", 150, 25, 20);
+		drawImageCenter(g, "resource_metal", 250, 25, 20);
+		drawImageCenter(g, "resource_stone", 350, 25, 20);
+	}
+	
+	void drawImageCenter(Graphics g, String image, int x, int y, int r) {
+		g.drawImage(GameResources.getImage(image), x - r, y - r, r*2, r*2, null);
 	}
 	
 	void fillCircle(Graphics g, int x, int y, int r) {

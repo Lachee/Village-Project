@@ -26,14 +26,20 @@ public class GameResources {
 			if(img != null) {
 				imageResources.put(name, img);
 				return img;
-			}		
+			}
 		}catch(Exception e) {
+			System.err.println("Could not load " + name + ": " + e.getMessage() + " ["+ fullPath +"]");
 		}
-		
+			
+		imageResources.put(name, null);
 		return null;
 	}
 	
 	public static String getResourceFolder() {
 		return System.getProperty("user.dir") + "/resources/";
+	}
+	
+	public static int size() {
+		return imageResources.size();
 	}
 }
