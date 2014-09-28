@@ -4,18 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
-import com.voidpixel.village.interfaces.listeners.InputKeyListener;
-import com.voidpixel.village.interfaces.listeners.InputMouseListener;
 import com.voidpixel.village.main.*;
 import com.voidpixel.village.task.*;
 import com.voidpixel.village.village.Village;
 import com.voidpixel.village.world.World;
 
-public class MainGame implements InputKeyListener, InputMouseListener{
+public class MainGame {
 	
 	//Make this a singleton
 	public static MainGame instance;
@@ -27,22 +23,15 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 	public double tickRate = 0;
 	protected long tickStart = 0;
 	
-	protected int frameCount = 0;
-	
+	protected int frameCount = 0;	
 	
 	public boolean secondFlash = false;
 	public boolean drawGrid = false;
-	
-	//Mouse Keys
-	public boolean mouseRightButton = false;
-	public boolean mouseLeftButton = false;
-	public boolean mouseMiddleButton = false;
 	
 	//Camera Controll
 	public double minZoom = 2.5;
 	public double maxZoom = 0.25;
 	
-	public Point mousePosition = new Point();
 	public Point mouseLastPosition = new Point();
 	
 	public ArrayList<Person> people = new ArrayList<Person>();
@@ -56,9 +45,6 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 	public MainGame(Program program, Canvas canvas) {
 		MainGame.instance = this;
 		
-		Listener.registerKeyListener(this);
-		Listener.registerMouseListener(this);
-		
 		this.program = program;
 		this.canvas = canvas;
 		
@@ -66,7 +52,7 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 
 		village = new Village(this, 10, 10);
 		
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 0; i++) {
 			people.add(new Person(this, 1 + i, 1));
 			if(i == 0) {
 				people.get(0).clearTasks();
@@ -101,6 +87,22 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 			
 		}
 		
+		//Camera Zoom
+		canvas.camera.zoom(Input.getMouseScroll() / 10.0);
+		if(canvas.camera.getScale() < maxZoom) canvas.camera.setScale(maxZoom);
+		if(canvas.camera.getScale() > minZoom) canvas.camera.setScale(minZoom);
+		
+		//Camera movement
+		if(Input.getMouse(Input.MOUSE_MIDDLE)) {
+			Point p = Input.getMousePosition();
+			int x = p.x - mouseLastPosition.x;
+			int y = p.y - mouseLastPosition.y;
+			canvas.camera.translate(x, y);
+		}
+		
+		//Debug Mode
+		program.stats.setEnabled(Input.getKey(KeyEvent.VK_F3));
+		
 		for(Person person : people) 
 			person.update(delta);
 		
@@ -111,14 +113,8 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 			tick();
 		}
 		
-		if(mouseMiddleButton) {
-			int x = mousePosition.x - mouseLastPosition.x;
-			int y = mousePosition.y - mouseLastPosition.y;
-			canvas.camera.translate(x, y);
-		}
 		
-		mouseLastPosition = mousePosition;
-
+		mouseLastPosition = Input.getMousePosition();	
 	}
 	
 	public void tick() { 
@@ -154,69 +150,58 @@ public class MainGame implements InputKeyListener, InputMouseListener{
 		}	
 		
 	}
-	
-	
+		
 	public void renderGUI(Graphics g) {
-		g.drawString("Test", 10, 10);
 	}
 
-
-	@Override
-	public void OnKeyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_UP) 
-			canvas.camera.translate(0, 10);
-		if(e.getKeyCode() == KeyEvent.VK_DOWN) 
-			canvas.camera.translate(0, -10);
+	public void renderDebug(Graphics g) { 
+		//g.drawString("People: " + people.size(), 10, 250);
 		
-		if(e.getKeyCode() == KeyEvent.VK_LEFT) 
-				canvas.camera.translate(10, 0);
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
-			canvas.camera.translate(-10, 0);
+		//The Camera
+		g.setColor(Color.white);
+		g.drawString("=== Camera ===", 10, 250);		
+		g.setColor(Color.lightGray);		
+		g.drawString("scale: " + canvas.camera.getScale(), 10, 270);
+		g.drawString("zoom: " + (1/canvas.camera.getScale()), 10, 290);
+		g.drawString("x: " + canvas.camera.getRealX(), 10, 310);
+		g.drawString("y: " + canvas.camera.getRealY(), 10, 330);
 		
-		if(e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET)
-			canvas.camera.zoom(0.1);
-		else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET)
-			canvas.camera.zoom(-0.1);
+		
+		//Players
+		g.setColor(Color.white);
+		g.drawString("=== People ===", 10, 360);		
+		g.setColor(Color.lightGray);		
+		g.drawString("People Count: " + people.size(), 10, 380);
+		g.drawString("Queued Tasks: " + taskQueue.size(), 10, 400);
+		
+		
+		//Village
+		g.setColor(Color.white);
+		g.drawString("=== Village ===", 250, 250);		
+		g.setColor(Color.lightGray);		
+		g.drawString("Wood: " + village.collectiveWood.getAmount(), 250, 270);
+		g.drawString("Stone: " + village.collectiveStone.getAmount(), 250, 290);
+		g.drawString("Metal: " + village.collectiveMetal.getAmount(), 250, 310);
+		g.drawString("Food: " + village.collectiveFood.getAmount(), 250, 330);
+		
+		//General
+		g.setColor(Color.white);
+		g.drawString("=== World ===", 250, 360);		
+		g.setColor(Color.lightGray);		
+		g.drawString("World Seed: " + world.seed, 250, 380);
+		g.drawString("World Size: " + world.width + " x " + world.height, 250, 400);
+		
+		
+		
+		//Next Row
+		/*
+		g.setColor(Color.white);
+		g.drawString("=== Village ===", 600, 20);		
+		g.setColor(Color.lightGray);		
+		g.drawString("People Count: " + people.size(), 600, 40);
+		g.drawString("Queued Tasks: " + taskQueue.size(), 600, 60);
+		*/
+		
 	}
 
-	@Override
-	public void OnKeyReleased(KeyEvent e) { }
-
-	@Override
-	public void OnMousePressed(MouseEvent e) { 
-		if(e.getButton() == 1)
-			mouseLeftButton = true;
-		
-		if(e.getButton() == 2)
-			mouseMiddleButton = true;
-		
-		if(e.getButton() == 3)
-			mouseRightButton = true;		
-	}
-
-	@Override
-	public void OnMouseReleased(MouseEvent e) { 
-		if(e.getButton() == 1)
-			mouseLeftButton = false;
-		
-		if(e.getButton() == 2)
-			mouseMiddleButton = false;
-		
-		if(e.getButton() == 3)
-			mouseRightButton = false;
-	}
-
-	@Override
-	public void OnMouseMoved(Point mousePoint) {
-		mousePosition = mousePoint;
-	}
-
-	@Override
-	public void OnMouseScroll(MouseWheelEvent e) {
-		canvas.camera.zoom(-(double)e.getPreciseWheelRotation() / 10.0);
-		
-		//Confusing? Yes! But there is a reason for it! zoom = 1 / scale!
-		if(canvas.camera.getScale() < maxZoom) canvas.camera.setScale(maxZoom);
-		if(canvas.camera.getScale() > minZoom) canvas.camera.setScale(minZoom);
-	}
 }

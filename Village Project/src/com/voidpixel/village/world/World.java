@@ -25,7 +25,13 @@ public class World {
 	
 	public static boolean debugMode = false;
 	
+	public final long seed;
+	
 	public World(int width, int height) {
+		this(width, height, 0);
+	}
+	
+	public World(int width, int height, long seed) {
 		this.width = width;
 		this.height = height;
 
@@ -35,7 +41,10 @@ public class World {
 		meta = new int[this.width][this.height][10];
 		
 		Random rand = new Random();
-		long seed = rand.nextLong();
+		
+		if(seed == 0) seed = rand.nextLong();
+		this.seed = seed;
+		
 		rand.setSeed(seed);
 
 		System.out.println("Generating World");

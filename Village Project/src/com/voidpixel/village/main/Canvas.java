@@ -64,6 +64,7 @@ public class Canvas extends JComponent{
 
 		//The gui
 		program.game.renderGUI(g);
+		program.stats.renderGUI(g);
 		
 		//Dispose of the graphics
 		g.dispose();

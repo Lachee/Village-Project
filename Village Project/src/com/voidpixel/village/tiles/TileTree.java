@@ -12,8 +12,23 @@ public class TileTree extends TileResource{
 	}
 
 	public void calculateColor(World world, int x, int y) {
-		world.setMetadata(x, y, 1, 0);
+		Tile t = world.getTile(x, y + 1);
 		
+		if(t == null || t.id != getID()) world.setMetadata(x, y, 1, 1);
+		
+		int meta = world.getMetadata(x, y + 1, 1);
+		if(meta >= 2) {
+		
+			int level = meta - 2 - 1;
+			if(level > 0)
+				world.setMetadata(x, y, 1, level + 2);
+			else
+				world.setMetadata(x, y, 1, 0);
+		}else if(meta == 1) {
+			world.setMetadata(x, y, 1, 3 + 2);
+		}
+		
+		world.setMetadata(x, y, 1, 0);
 
 /*
 		Tile t = world.getTile(x, y + 1);
