@@ -52,21 +52,24 @@ public class MainGame {
 
 		village = new Village(this, 10, 10);
 		
-		for(int i = 0; i < 0; i++) {
+		for(int i = 0; i < 3; i++) {
 			people.add(new Person(this, 1 + i, 1));
 			if(i == 0) {
 				people.get(0).clearTasks();
 				people.get(0).setTask(new TaskBuildVillage(), true);
 			}
 		}
-		
+				
 		//TODO: Implement the main feature of this program...
 		//tick(n);
 	}
 	
 	public void addTask(PersonTask task, int maxWorkers) {
+		for(PersonTaskQueue queue : taskQueue) 
+			if(queue.task.getName() == task.getName()) return;
+		
+		//TODO: Create and use priority system here.
 		PersonTaskQueue queue = new PersonTaskQueue(task, maxWorkers);
-		if(taskQueue.contains(queue)) return;
 		taskQueue.add(queue);
 	}
 	

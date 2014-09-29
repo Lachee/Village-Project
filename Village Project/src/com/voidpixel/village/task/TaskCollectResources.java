@@ -3,12 +3,13 @@ package com.voidpixel.village.task;
 import com.voidpixel.village.game.MainGame;
 import com.voidpixel.village.game.Person;
 
-public class TaskCollectResources implements PersonTask{
-
+public class TaskCollectResources extends PersonTask{
+	
 	public String resource;
 	public int amount;
 	
 	public TaskCollectResources(String resource, int amount) {
+		super("Task/Collect/" + resource);
 		this.resource = resource;
 		this.amount = amount;
 	}
@@ -77,9 +78,4 @@ public class TaskCollectResources implements PersonTask{
 		game.addTask(new TaskGatherWood(), 3);
 	}
 	
-	@Override
-	public String getName() {
-		return "Task/Collect/Resource";
-	}
-
 }

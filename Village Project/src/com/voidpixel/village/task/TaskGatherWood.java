@@ -10,7 +10,7 @@ import com.voidpixel.village.tiles.Tile;
 import com.voidpixel.village.tiles.TileResource;
 import com.voidpixel.village.world.World;
 
-public class TaskGatherWood implements PersonTask{
+public class TaskGatherWood extends PersonTask{
 	public static int searchRadius = 50;
 	public Point targetTree;
 
@@ -30,6 +30,10 @@ public class TaskGatherWood implements PersonTask{
 	 * }
 	 * 	
 	 */
+	
+	public TaskGatherWood() {
+		super("Task/Gather/Wood");
+	}
 	
 	@Override
 	public void tick(MainGame game, Person person) {
@@ -87,6 +91,7 @@ public class TaskGatherWood implements PersonTask{
 			}
 		}
 
+		this.searchRadius = game.world.width > game.world.height ? game.world.width : game.world.height;
 		
 		//If no one has a tree already, find one
 		for(int r = 0; r < searchRadius; r++) {
@@ -109,11 +114,6 @@ public class TaskGatherWood implements PersonTask{
 	@Override
 	public void endTask(Person person) {
 		//System.out.println(person.name + " has finished chooping wood down");
-	}
-
-	@Override
-	public String getName() {
-		return "Task/Gather/Wood";
 	}
 
 }

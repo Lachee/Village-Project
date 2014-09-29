@@ -2,8 +2,11 @@ package com.voidpixel.village.task;
 
 import com.voidpixel.village.game.MainGame;
 import com.voidpixel.village.game.Person;
-public class TaskStoreResources implements PersonTask{
+public class TaskStoreResources extends PersonTask{
 
+	public TaskStoreResources() {
+		super("Task/Store/Resources");
+	}
 	
 	@Override
 	public void endTask(Person person) {
@@ -37,10 +40,5 @@ public class TaskStoreResources implements PersonTask{
 		}
 	}
 
-	
-	@Override
-	public String getName() {
-		return "Task/Store/Resource";
-	}
 
 }

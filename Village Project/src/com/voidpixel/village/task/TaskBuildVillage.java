@@ -3,8 +3,12 @@ package com.voidpixel.village.task;
 import com.voidpixel.village.game.MainGame;
 import com.voidpixel.village.game.Person;
 
-public class TaskBuildVillage implements PersonTask{
-
+public class TaskBuildVillage extends PersonTask{
+	
+	public TaskBuildVillage() {
+		super("Task/Build/Test");
+	}
+	
 	@Override
 	public void endTask(Person person) {
 		// TODO Auto-generated method stub
@@ -21,12 +25,6 @@ public class TaskBuildVillage implements PersonTask{
 		
 		if(person.getX() == 1 && person.getY() == 1)
 			person.storedWood.remove(10);		
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "Task/Build/Store";
 	}
 
 }

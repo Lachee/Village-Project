@@ -90,13 +90,14 @@ public class Program extends JFrame implements ThreadListener {
 	}
 	
 	
-	public static void breakProgram() {
-		try {
+	public static void printStackTrace() {
+		new Exception("Stack Trace:").printStackTrace();
+		/*try {
 			double answer = 42 / 0;
 			System.out.println("All these squares make a circle x" + answer);
 		}catch(Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 
