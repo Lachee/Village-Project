@@ -38,7 +38,23 @@ public class Village  implements GameElement{
 		
 	@Override
 	public void update(double delta) {
-		
+		Point mps = Input.getMousePosition();
+		Point mp = game.canvas.camera.screenToWorld(mps);
+		mouseOver = mp.x > x* World.scale && mp.x < x* World.scale + World.scale && mp.y > y* World.scale && mp.y < y* World.scale + World.scale;
+		 
+		if(mps.distance(450, 25) < 20 && Input.getMouseDown(Input.MOUSE_LEFT)) {
+			game.cameraCyclePeople();
+		}else if(Input.getMouse(Input.MOUSE_LEFT)) {
+			int wx = mp.x / World.scale;
+			int wy = mp.y / World.scale;
+			if(game.world.inBounds(wx, wy) && game.world.getTile(wx, wy).getID() != World.tree.getID()) 
+				game.world.setTile(wx, wy, World.tree.getID());
+		}else if(Input.getMouse(Input.MOUSE_RIGHT)) {
+			int wx = mp.x / World.scale;
+			int wy = mp.y / World.scale;
+			if(game.world.inBounds(wx, wy) && game.world.getTile(wx, wy).getID() != 0) 
+				game.world.setTile(wx, wy, 0);
+		}
 	}
 
 	@Override
@@ -69,15 +85,32 @@ public class Village  implements GameElement{
 
 	@Override
 	public void renderGUI(Graphics g) {
-		
+
+		Point mp = Input.getMousePosition();
+
 		g.setColor(new Color(62, 69, 61));
-		g.fillRect(0, 0, game.canvas.getWidth(), 25);
-		
+	
 		fillCircle(g, 50, 20, 25);	//Food
 		fillCircle(g, 150, 20, 25);	//Wood
 		fillCircle(g, 250, 20, 25);	//Metal
 		fillCircle(g, 350, 20, 25);	//Stone
-
+		
+		if( mp.distance(450, 25) < 20) {
+			Color c = g.getColor();
+			g.setColor(Color.green);			
+			for(Person p : game.people){
+				Point pnt = game.canvas.camera.worldToScreen(new Point(p.getX() * World.scale + (World.scale / 2), p.getY() * World.scale+ (World.scale / 2)));
+				g.drawLine(pnt.x, pnt.y, 450, 20);
+			}
+			
+			g.setColor(c);
+			fillCircle(g, 450, 20, 27);		
+		}else{
+			fillCircle(g, 450, 20, 25);	
+		}
+		
+		g.fillRect(0, 0, game.canvas.getWidth(), 25);		
+		
 		drawImageCenter(g, "voidpixel", game.canvas.getWidth() - 42, 13, 32);
 		
 		g.setColor(Color.white);		
@@ -85,21 +118,15 @@ public class Village  implements GameElement{
 		g.drawString("x" + collectiveWood.getAmount(), 150 + 20, 20);	//Wood
 		g.drawString("x" + collectiveMetal.getAmount(), 250 + 20, 20);	//Metal
 		g.drawString("x" + collectiveStone.getAmount(), 350 + 20, 20);	//Stone
+		g.drawString("x" + game.people.size(), 450 + 20, 20);	//Population
 
 		drawImageCenter(g, "resource_food", 50, 25, 20);
 		drawImageCenter(g, "resource_wood", 150, 25, 20);
 		drawImageCenter(g, "resource_metal", 250, 25, 20);
 		drawImageCenter(g, "resource_stone", 350, 25, 20);
+		drawImageCenter(g, "resource_people", 450, 25, 20);
 		
 		
-		
-		g.setColor(Color.magenta);
-		Point mp = Input.getMousePosition();
-		
-		
-		
-		g.drawLine(mp.x - 5, mp.y, mp.x + 5, mp.y);
-		g.drawLine(mp.x, mp.y - 5, mp.x, mp.y + 5);
 		
 	}
 	
@@ -109,6 +136,9 @@ public class Village  implements GameElement{
 	
 	void fillCircle(Graphics g, int x, int y, int r) {
 		g.fillOval(x - r, y - r, r * 2, r * 2);
+	}	
+	void drawCircle(Graphics g, int x, int y, int r) {
+		g.drawOval(x - r, y - r, r * 2, r * 2);
 	}
 
 }

@@ -25,8 +25,7 @@ public class Camera {
 	
 	public Point worldToScreen(Point p) {
 		double x = p.x * scale + this.x * scale;		
-		double y = p.y * scale + this.y * scale;	
-		
+		double y = p.y * scale + this.y * scale;			
 		
 		return new Point((int)x, (int)y);
 	}
@@ -47,8 +46,8 @@ public class Camera {
 		
 		/*
 		 	== What we are basicly doing ==
-			double oWidth = canvas.getWidth() / so;
-			double nWidth = canvas.getWidth() / sn;
+			double oWidth = canvas.getWidth() / scaleOld;
+			double nWidth = canvas.getWidth() / scaleNew;
 			double xDiff = nWidth - oWidth;
 			this.x += xDiff / 2;
 		*/
@@ -57,6 +56,16 @@ public class Camera {
 		this.y += ((canvas.getHeight() / sn) - (canvas.getHeight() / so)) / 2;
 		
 		this.scale = sn;
+	}
+
+	public void centerPosition(double x, double y) {
+		this.centerPosition(x, y, this.scale);
+	}
+	public void centerPosition(double x, double y, double scale) {
+		setScale(1);
+		this.x = (canvas.getWidth() / 2) - x;
+		this.y = (canvas.getHeight() / 2) - y;
+		setScale(scale);
 	}
 	
 	public void zoom(double amount) { 

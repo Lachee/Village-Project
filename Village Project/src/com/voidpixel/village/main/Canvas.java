@@ -1,10 +1,16 @@
 package com.voidpixel.village.main;
 
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,6 +29,13 @@ public class Canvas extends JComponent{
 		createScreen();
 		
 		camera = new Camera(this);
+
+		// This code set's the cursor to nothing, so you have no cursor anymore!
+		/*
+		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+		this.setCursor(blankCursor);
+		*/
 	}
 	
 	public void createScreen() {

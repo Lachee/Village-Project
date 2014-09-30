@@ -139,8 +139,6 @@ public class World {
 	}
 	
 	public void updateNeighbours(int x, int y, TileUpdateType type) {
-
-		System.out.println("Updating Neighbours of " + x + ", " + y + " ( " + type.toString() + " )");
 		if(inBounds(x, y+1)) getTile(x, y+1).OnNeighbourUpdate(this, x, y + 1, type);
 		if(inBounds(x, y-1)) getTile(x, y-1).OnNeighbourUpdate(this, x, y - 1, type);
 		if(inBounds(x+1, y)) getTile(x+1, y).OnNeighbourUpdate(this, x+1, y, type);

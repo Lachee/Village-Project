@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.voidpixel.village.building.Village;
 import com.voidpixel.village.main.*;
@@ -31,6 +32,9 @@ public class MainGame {
 	//Camera Controll
 	public double minZoom = 2.5;
 	public double maxZoom = 0.25;
+	
+	//The next person to cycle camera on
+	public int cameraCycleIndex = 0;
 	
 	public Point mouseLastPosition = new Point();
 	
@@ -82,6 +86,15 @@ public class MainGame {
 		return null;
 	}
 	
+	public void cameraCyclePeople() {
+
+		Person p = people.get(cameraCycleIndex);
+		cameraCycleIndex++;
+		if(cameraCycleIndex >= people.size()) cameraCycleIndex = 0;
+		
+		canvas.camera.centerPosition(p.x * World.scale, p.y * World.scale);
+	}
+	
 	public void update(double delta) {
 		frameCount++;
 		if(frameCount >= program.framerate) {
@@ -101,6 +114,11 @@ public class MainGame {
 			int x = p.x - mouseLastPosition.x;
 			int y = p.y - mouseLastPosition.y;
 			canvas.camera.translate(x, y);
+		}
+		
+		//Cycle between people
+		if(Input.getKeyDown(KeyEvent.VK_C)) {
+			cameraCyclePeople();
 		}
 		
 		//Debug Mode
@@ -158,10 +176,28 @@ public class MainGame {
 			person.renderCamera(c);
 		}	
 		
+
+		// This is a little test code to see where the cursor is at in world space
+		/*
+		c.setColor(Color.magenta);
+		Point mp = c.screenToWorld(Input.getMousePosition());	
+		c.drawRect((int)Math.floor(mp.x / World.scale) * World.scale , (int)Math.floor(mp.y / World.scale) * World.scale, World.scale, World.scale);
+		*/
+		
 	}
 		
 	public void renderGUI(Graphics g) {
 		village.renderGUI(g);
+		
+
+		
+		//This is a little example code to see where the cursor is at in world space
+		/*
+		g.setColor(Color.magenta);
+		Point mp = Input.getMousePosition();			
+		g.drawLine(mp.x - 5, mp.y, mp.x + 5, mp.y);
+		g.drawLine(mp.x, mp.y - 5, mp.x, mp.y + 5);
+		*/
 	}
 
 	public void renderDebug(Graphics g) { 
