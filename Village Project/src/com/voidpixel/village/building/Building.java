@@ -10,7 +10,20 @@ public class Building {
 	public String name;
 	public Color color;
 	
+	public Building(int x, int y, int width, int height, String name, Color color) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.name = name;
+		this.color = color;
+	}
+	
 	public void renderCamera(Camera c) {
-		c.drawRect(x * World.scale, y * World.scale, width * World.scale, height * World.scale);
+		c.setColor(color);
+		c.fillRect(x * World.scale, y * World.scale, width * World.scale, height * World.scale);
+		
+		c.setColor(color.darker().darker());
+		c.drawStringCenter(this.name, x * World.scale + World.scale / 2, y * World.scale + World.scale / 2);
 	}
 }

@@ -133,9 +133,15 @@ public class MainGame {
 	}
 	
 	public void renderCamera(Camera c) {
-		world.renderCamera(c);		
+
+		c.setColor(Color.black);
+		world.renderCamera(c);				
+
+		c.setColor(Color.black);
 		village.renderCamera(c);
 		
+
+		c.setColor(Color.black);
 		if(drawGrid) {
 			c.setColor(new Color(0,0,0,25));
 			for(int x = 0; x < world.width; x++) {

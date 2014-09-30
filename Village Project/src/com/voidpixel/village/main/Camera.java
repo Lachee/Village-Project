@@ -1,10 +1,14 @@
 package com.voidpixel.village.main;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+
+import sun.security.krb5.internal.TGSRep;
 
 public class Camera {
 	protected double x = 0;
@@ -125,6 +129,12 @@ public class Camera {
 	//String. These get scaled too as a warning
 	public void drawString(String string, int x, int y) {
 		g.drawString(string, x, y);
+	}
+	public void drawStringCenter(String string, int x, int y) {
+		FontMetrics fm = g.getFontMetrics();
+		
+		int width = fm.stringWidth(string);
+		this.drawString(string, x - (width/2), y);
 	}
 	
 	public Rectangle getClipBounds() {

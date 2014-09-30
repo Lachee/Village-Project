@@ -2,21 +2,25 @@ package com.voidpixel.village.building;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.util.ArrayList;
 
 import com.voidpixel.village.game.*;
 import com.voidpixel.village.interfaces.GameElement;
 import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.main.GameResources;
+import com.voidpixel.village.main.Input;
 import com.voidpixel.village.world.World;
 
 public class Village  implements GameElement{
 	public final MainGame game;
 	public int x, y;
+	public boolean mouseOver = false;
 	
-	//TODO: Change to modules or something
-	public int level = 0;
 	public Resource collectiveFood, collectiveWood, collectiveMetal, collectiveStone, collectiveScience;
-		
+	
+	public ArrayList<Building> buildings = new ArrayList<Building>();
+	
 	public Village (MainGame game, int x, int y){
 
 		collectiveFood = new Resource("Food", 200);
@@ -28,10 +32,13 @@ public class Village  implements GameElement{
 		this.x = x;
 		this.y = y;
 		this.game = game;
+		
+		buildings.add(new Building(x + 10, y + 2, 1, 1, "Tent", Color.DARK_GRAY));
 	}
-	
+		
 	@Override
 	public void update(double delta) {
+		
 	}
 
 	@Override
@@ -40,8 +47,24 @@ public class Village  implements GameElement{
 
 	@Override
 	public void renderCamera(Camera c) {
-		c.setColor(Color.DARK_GRAY);
-		c.fillRect(x * World.scale - World.scale , y * World.scale - World.scale, 3 * World.scale, 3 * World.scale);
+		int hs = World.scale / 2;
+	
+		for(final Building b : buildings) {
+			if(mouseOver) {
+				c.setColor(Color.green);
+				c.drawLine(x * World.scale + hs, y * World.scale + hs, b.x * World.scale + hs, b.y * World.scale + hs);
+			}
+			
+			b.renderCamera(c);
+		}
+		
+		c.setColor(Color.darkGray);
+		c.fillRect(x * World.scale , y * World.scale, World.scale, World.scale);
+		
+		
+	
+		c.setColor(Color.black);
+		c.drawStringCenter("Town Center", x * World.scale + hs, y * World.scale + hs);
 	}
 
 	@Override
@@ -67,6 +90,17 @@ public class Village  implements GameElement{
 		drawImageCenter(g, "resource_wood", 150, 25, 20);
 		drawImageCenter(g, "resource_metal", 250, 25, 20);
 		drawImageCenter(g, "resource_stone", 350, 25, 20);
+		
+		
+		
+		g.setColor(Color.magenta);
+		Point mp = Input.getMousePosition();
+		
+		
+		
+		g.drawLine(mp.x - 5, mp.y, mp.x + 5, mp.y);
+		g.drawLine(mp.x, mp.y - 5, mp.x, mp.y + 5);
+		
 	}
 	
 	void drawImageCenter(Graphics g, String image, int x, int y, int r) {

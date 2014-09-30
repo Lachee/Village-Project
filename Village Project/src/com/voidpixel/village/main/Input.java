@@ -6,13 +6,14 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
+	public static Canvas canvas;
 	
 	public static int TYPE_NONE = 0, TYPE_PRESSED = 1, TYPE_DOWN = 2, TYPE_RELEASED = 3;	
 	public static int MOUSE_LEFT = 0, MOUSE_MIDDLE = 1, MOUSE_RIGHT = 2;
 	protected static HashMap<Integer, Integer> keyEvents = new HashMap<Integer, Integer>();
 	protected static int[] mouseEvents = new int[3];
 	protected static double mouseScroll = 0;
-	protected static Point mousePoint;
+	protected static Point mousePoint = new Point(0, 0);
 	
 	public static Point getMousePosition() {
 		return mousePoint;
@@ -62,6 +63,10 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	public static void update() {
 		mouseScroll = 0;
 		
+		if(canvas != null && canvas.getMousePosition() != null)
+			mousePoint = canvas.getMousePosition();
+		
+		
 		for(int i = 0; i < 3; i++) {
 			if(mouseEvents[i] == TYPE_RELEASED)
 				mouseEvents[i] = TYPE_NONE;
@@ -106,12 +111,12 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mousePoint = e.getPoint();
+		//mousePoint = e.getPoint();
 	}
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mousePoint = e.getPoint();
+		//mousePoint = e.getPoint();
 	}
 	
 	@Override

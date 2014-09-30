@@ -44,6 +44,8 @@ public class Program extends JFrame implements ThreadListener {
 		game = new MainGame(this, canvas);
 
 		input = new Input();	
+		Input.canvas = canvas;
+		
 		this.addKeyListener(input);
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
