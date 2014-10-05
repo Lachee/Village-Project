@@ -86,8 +86,12 @@ public class Person  implements GameElement{
 			c.drawRect(tx * World.scale, ty * World.scale, World.scale, World.scale);
 		}
 
+		
 		c.setColor(Color.white);
 		c.drawString(symbol + "", getX() * World.scale, (getY()+1) * World.scale);
+		
+		
+		//c.drawImage("resource_people", getX() * World.scale, getY() * World.scale, World.scale * 2, World.scale * 2);
 
 	}
 

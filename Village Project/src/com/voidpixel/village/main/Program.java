@@ -1,8 +1,16 @@
 package com.voidpixel.village.main;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
+
 import javax.swing.JFrame;
 
+import com.voidpixel.api.*;
 import com.voidpixel.village.game.MainGame;
 import com.voidpixel.village.interfaces.ThreadListener;
 import com.voidpixel.village.main.thread.GameThread;
@@ -69,12 +77,26 @@ public class Program extends JFrame implements ThreadListener {
 		System.out.println("Loading Program...");
 		System.out.println("Working Directory: " + System.getProperty("user.dir"));
 
+		System.out.println("Checking Connection and getting news...");
+		VoidpixelAPI api = new VoidpixelAPI("villageProject", true);
+		VoidpixelNews news = api.getLatestNews();
+		if(api.getResponse() == VoidpixelResponse.Valid) {
+			System.out.println("Connection Made... Latest News Feed:");
+			System.out.println(news.title + " by " + news.author + " on the " + news.date_posted + ": ");
+			System.out.println(news.text);
+			System.out.println();
+		}else{
+			System.out.println("Connection Failed!");
+			System.out.println(api.getResponse().getMessage());
+		}
+		
 		Program program = new Program();
 		program.setSize(WIDTH, HEIGHT);
 		program.setLocationRelativeTo(null);
 		program.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		program.setVisible(true);
 
+		
 		System.out.println("Loading Finished.");
 	}
 
