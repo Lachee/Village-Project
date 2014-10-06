@@ -42,6 +42,7 @@ public class Person  implements GameElement{
 		this.name = PersonName.getName();
 		this.symbol = this.name.charAt(0);
 
+			
 		storedFood = new Resource("Food");
 		storedWood = new Resource("Wood");
 		storedMetal = new Resource("Metal");
