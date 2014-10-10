@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
+import java.security.MessageDigest;
 
 import javax.swing.JFrame;
 
@@ -77,6 +78,8 @@ public class Program extends JFrame implements ThreadListener {
 		System.out.println("Loading Program...");
 		System.out.println("Working Directory: " + System.getProperty("user.dir"));
 
+		
+		// This is just to test the API and make sure it is working.
 		System.out.println(" - Checking Connection and getting news...");
 		VoidpixelAPI api = new VoidpixelAPI("villageProject", true);
 		VoidpixelNews news = api.getLatestNews();
@@ -144,4 +147,28 @@ public class Program extends JFrame implements ThreadListener {
 		
 	}
 
+	public static String hashString(String input) {
+		try {
+			byte[] inputBytes = input.getBytes("UTF-8");
+
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(inputBytes);
+
+			StringBuilder hexString = new StringBuilder();
+			for(int i = 0; i < digest.length; i++) {
+				String hex = Integer.toHexString(0xFF & digest[i]);
+				if (hex.length() == 1) 
+				    hexString.append('0');
+				
+				hexString.append(hex);
+			}
+			
+			return hexString.toString().toLowerCase();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
 }

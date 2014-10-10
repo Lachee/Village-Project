@@ -16,6 +16,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	protected static Point mousePoint = new Point(0, 0);
 	
 	public static Point getMousePosition() {
+		if(mousePoint == null) return new Point();
 		return mousePoint;
 	}
 	

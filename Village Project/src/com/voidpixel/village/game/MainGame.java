@@ -5,11 +5,15 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import com.voidpixel.village.building.Village;
 import com.voidpixel.village.main.*;
 import com.voidpixel.village.task.*;
+import com.voidpixel.village.task.global.TaskBuildVillage;
+import com.voidpixel.village.task.global.TaskGatherWood;
 import com.voidpixel.village.world.World;
 
 public class MainGame {
@@ -44,7 +48,7 @@ public class MainGame {
 
 	public Village village;
 	
-	public ArrayList<PersonTaskQueue> taskQueue = new ArrayList<PersonTaskQueue>();
+	public HashMap<String, PersonTask> tasks = new HashMap<String, PersonTask>();
 	
 	public MainGame(Program program, Canvas canvas) {
 		MainGame.instance = this;
@@ -55,35 +59,46 @@ public class MainGame {
 		world = new World(250, 250); //Program.WIDTH / 10, Program.HEIGHT / 10);
 
 		village = new Village(this, 10, 10);
-		
-		for(int i = 0; i < 3; i++) {
-			people.add(new Person(this, 1 + i, 1));
-			if(i == 0) {
-				people.get(0).clearTasks();
-				people.get(0).setTask(new TaskBuildVillage(), true);
-			}
-		}
 				
+		//Add all posible (and inital) tasks
+		addTask(new TaskBuildVillage());
+		addTask(new TaskGatherWood());
+				
+		for(int i = 0; i < 1; i++) {
+			people.add(new Person(this, 1 + i, 1));
+			requestTask(new TaskBuildVillage().getName());
+		}
+		
 		//TODO: Implement the main feature of this program...
 		//tick(n);
 	}
 	
-	public void addTask(PersonTask task, int maxWorkers) {
-		for(PersonTaskQueue queue : taskQueue) 
-			if(queue.task.getName() == task.getName()) return;
-		
-		//TODO: Create and use priority system here.
-		PersonTaskQueue queue = new PersonTaskQueue(task, maxWorkers);
-		taskQueue.add(queue);
+	protected void addTask(PersonTask task) {
+		String name = task.getName();
+		tasks.put(name, task);
+	}
+	
+	public void requestTask(String task) {
+		if(!tasks.containsKey(task)) return;
+		tasks.get(task).requests++;
 	}
 	
 	public PersonTask getPriorityTask() {
-		for(int i = 0; i < taskQueue.size(); i++) {
-			PersonTask task = taskQueue.get(i).addWorker();
-			if(task != null) return task;
+		PersonTask ht = null;
+		double hp = 0;
+		
+		for(Entry<String, PersonTask> entry : tasks.entrySet()) {
+		    String key = entry.getKey();
+		    PersonTask task = entry.getValue();
+
+		    double tp = (task.priority * task.requests) / (task.workers + 1);
+		    if(tp > hp) {
+		    	hp = tp;
+		    	ht = task;
+		    }
 		}
 		
-		return null;
+		return ht;
 	}
 	
 	public void cameraCyclePeople() {
@@ -218,7 +233,7 @@ public class MainGame {
 		g.drawString("=== People ===", 10, 360);		
 		g.setColor(Color.lightGray);		
 		g.drawString("People Count: " + people.size(), 10, 380);
-		g.drawString("Queued Tasks: " + taskQueue.size(), 10, 400);
+		//g.drawString("Queued Tasks: " + taskQueue.size(), 10, 400);
 		
 		//Players
 		g.setColor(Color.white);
@@ -247,13 +262,26 @@ public class MainGame {
 		
 		
 		//Next Row
-		/*
+		
 		g.setColor(Color.white);
-		g.drawString("=== Village ===", 600, 20);		
+		g.drawString("=== Tasks Avalible ===", 600, 20);		
 		g.setColor(Color.lightGray);		
-		g.drawString("People Count: " + people.size(), 600, 40);
-		g.drawString("Queued Tasks: " + taskQueue.size(), 600, 60);
-		*/
+		
+		int i = 0;
+		for(Entry<String, PersonTask> entry : tasks.entrySet()) {
+		    String key = entry.getKey();
+		    PersonTask task = entry.getValue();
+
+		    double tp = (task.priority * task.requests) / (task.workers + 1);
+			g.drawString(task.getName() + 
+					" [W: " + task.workers + "]" +
+					" [R: " + task.requests + "]" +
+					" [P: " + task.priority + "]" +
+					" [TP: " + (tp*100) + "%]", 
+					600, (20 * i) + 40);
+			i++;
+		}
+	
 		
 	}
 

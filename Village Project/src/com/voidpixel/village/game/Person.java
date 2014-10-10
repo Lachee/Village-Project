@@ -8,8 +8,8 @@ import java.util.Random;
 import com.voidpixel.village.interfaces.*;
 import com.voidpixel.village.main.Camera;
 import com.voidpixel.village.task.PersonTask;
-import com.voidpixel.village.task.TaskGatherWood;
 import com.voidpixel.village.task.TaskStoreResources;
+import com.voidpixel.village.task.global.TaskGatherWood;
 import com.voidpixel.village.world.World;
 
 
@@ -30,8 +30,8 @@ public class Person  implements GameElement{
 	public Resource storedFood, storedWood, storedMetal, storedStone;
 	public int maxResource = 50;
 
-	public ArrayList<PersonTask> tasks = new ArrayList<PersonTask>();
-
+	public PersonTask task;
+	
 	public Person(MainGame game, int x, int y) {
 		this.game = game;
 		this.x = x;
@@ -49,10 +49,6 @@ public class Person  implements GameElement{
 		storedStone = new Resource("Stone");
 
 		System.out.println("Created " + this.name + " (" + this.symbol + ")");
-
-
-		//TODO: Remove this
-		this.setTask(new TaskGatherWood(), false);
 	}
 
 	public int getX() { 
@@ -82,7 +78,7 @@ public class Person  implements GameElement{
 
 	public void renderCamera(Camera c) {
 
-		if(tasks.size() > 0) {
+		if(task != null) {
 			c.setColor(new Color(255, 200, 50, 255/2));
 			c.drawRect(tx * World.scale, ty * World.scale, World.scale, World.scale);
 		}
@@ -91,37 +87,28 @@ public class Person  implements GameElement{
 		c.setColor(Color.white);
 		c.drawString(symbol + "", getX() * World.scale, (getY()+1) * World.scale);
 		
-		
-		//c.drawImage("resource_people", getX() * World.scale, getY() * World.scale, World.scale * 2, World.scale * 2);
-
 	}
-
-	public void setTask(PersonTask task, boolean topOfStack) {
+	
+	public void getNewTask() {
+		task = game.getPriorityTask();
 		if(task == null) return;
-		
-		if(topOfStack)
-			tasks.add(0, task);
-		else
-			tasks.add(task);
-	}
-
-	public void clearTasks() {
-		tasks.clear();
+		task.onTaskStart(this);
 	}
 	
 	public void endTask() {
-		if(tasks.size() == 0) return;
-		tasks.get(0).endTask(this);
-		tasks.remove(0);
+		task.onTaskEnd(this);
+		task = null;
 	}
-
-	public PersonTask getPriorityTask() {
-		return game.getPriorityTask();
+	
+	public void changeTask(PersonTask task) {
+		endTask();
+		this.task = task;
+		this.task.onTaskStart(this);
 	}
 	
 	@Override
 	public void update(double delta) {
-		// TODO Auto-generated method stub
+		//TODO: NOTHING should be called on the update. It all is to be tick dependent!
 		if(tx >= 0 || ty >= 0) {
 			double dx = (tx - getX());
 			double dy = (ty - getY());
@@ -151,20 +138,13 @@ public class Person  implements GameElement{
 	@Override
 	public void tick() {
 		if(storedWood.getAmount() > maxResource || storedFood.getAmount() > maxResource || storedMetal.getAmount() > maxResource || storedStone.getAmount() > maxResource) {
-			//We are carrying to much, we must store our resources!
-			TaskStoreResources task = new TaskStoreResources();
-			if(tasks.get(0).getName() != task.getName()) {
-				clearTasks();
-				setTask(task, true);
-				System.out.println(this.name + " is full, unloading resources to closest stockpile");
-			}
+			changeTask(new TaskStoreResources());
 		}
 
-		if(tasks.size() == 0)
-			setTask(getPriorityTask(), false);
+		if(task == null) getNewTask();
 		
-		if(tasks.size() != 0)  {
-			tasks.get(0).tick(game, this);
+		if(task != null)  {
+			task.tick(game, this);
 		}else{
 			Random rand = new Random();
 			if(rand.nextDouble() <= 0.05) {

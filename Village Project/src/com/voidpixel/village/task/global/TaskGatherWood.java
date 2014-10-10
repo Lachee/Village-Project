@@ -1,4 +1,4 @@
-package com.voidpixel.village.task;
+package com.voidpixel.village.task.global;
 
 import java.awt.Point;
 import java.util.Random;
@@ -6,6 +6,7 @@ import java.util.Random;
 import com.voidpixel.village.game.MainGame;
 import com.voidpixel.village.game.Person;
 import com.voidpixel.village.game.Resource;
+import com.voidpixel.village.task.PersonTask;
 import com.voidpixel.village.tiles.Tile;
 import com.voidpixel.village.tiles.TileResource;
 import com.voidpixel.village.world.World;
@@ -32,7 +33,7 @@ public class TaskGatherWood extends PersonTask{
 	 */
 	
 	public TaskGatherWood() {
-		super("Task/Gather/Wood");
+		super("Task/Gather/Wood", 0.5);
 	}
 	
 	@Override
@@ -74,9 +75,9 @@ public class TaskGatherWood extends PersonTask{
 		int cy = person.getY() + (rand.nextInt(4) - 2);
 		
 		for(Person fellowPerson : game.people) {
-			if(fellowPerson.tasks.size() == 0 || fellowPerson.tasks.get(0).getName() != this.getName()) continue;
+			if(fellowPerson.task == null || !fellowPerson.task.equals(this)) continue;
 			
-			TaskGatherWood task = (TaskGatherWood)fellowPerson.tasks.get(0);			
+			TaskGatherWood task = (TaskGatherWood)fellowPerson.task;			
 			if(task.targetTree != null) {
 
 				cx = task.targetTree.x;
@@ -109,11 +110,6 @@ public class TaskGatherWood extends PersonTask{
 				return;
 			}
 		}
-	}
-
-	@Override
-	public void endTask(Person person) {
-		//System.out.println(person.name + " has finished chooping wood down");
 	}
 
 }
