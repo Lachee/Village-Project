@@ -82,6 +82,7 @@ public class Canvas extends JComponent{
 		if(screenCamera == null) return;
 		
 		Graphics2D g2d = (Graphics2D) screenCamera.getGraphics();
+		
 		g2d.setColor(Color.black);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		

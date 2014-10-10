@@ -2,7 +2,9 @@ package com.voidpixel.village.building;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import com.voidpixel.village.game.*;
@@ -88,6 +90,7 @@ public class Village  implements GameElement{
 
 		Point mp = Input.getMousePosition();
 
+		startAA((Graphics2D)g);
 		g.setColor(new Color(62, 69, 61));
 	
 		fillCircle(g, 50, 20, 25);	//Food
@@ -120,6 +123,8 @@ public class Village  implements GameElement{
 		g.drawString("x" + collectiveStone.getAmount(), 350 + 20, 20);	//Stone
 		g.drawString("x" + game.people.size(), 450 + 20, 20);	//Population
 
+		endAA((Graphics2D)g);
+		
 		drawImageCenter(g, "resource_food", 50, 25, 20);
 		drawImageCenter(g, "resource_wood", 150, 25, 20);
 		drawImageCenter(g, "resource_metal", 250, 25, 20);
@@ -127,6 +132,24 @@ public class Village  implements GameElement{
 		drawImageCenter(g, "resource_people", 450, 25, 20);
 		
 		
+		
+	}
+	
+	void startAA(Graphics2D g2d) {
+
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		rh.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHints(rh);
+		
+	}
+	
+	void endAA(Graphics2D g2d) {
+
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		rh.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHints(rh);
 		
 	}
 	
