@@ -7,6 +7,7 @@ import com.voidpixel.village.game.MainGame;
 import com.voidpixel.village.game.Person;
 import com.voidpixel.village.game.Resource;
 import com.voidpixel.village.task.PersonTask;
+import com.voidpixel.village.task.TaskStoreResources;
 import com.voidpixel.village.tiles.Tile;
 import com.voidpixel.village.tiles.TileResource;
 import com.voidpixel.village.world.World;
@@ -34,6 +35,11 @@ public class TaskGatherWood extends PersonTask{
 	
 	public TaskGatherWood() {
 		super("Task/Gather/Wood", 0.5);
+	}
+	
+	public void onTaskChange(Person person, PersonTask task) {
+		if(!new TaskStoreResources().equals(task)) return;
+		completeTask(person);
 	}
 	
 	@Override

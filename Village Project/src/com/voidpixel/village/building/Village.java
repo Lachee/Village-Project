@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.voidpixel.village.game.*;
 import com.voidpixel.village.interfaces.GameElement;
@@ -35,7 +36,6 @@ public class Village  implements GameElement{
 		this.y = y;
 		this.game = game;
 		
-		buildings.add(new Building(x + 10, y + 2, 1, 1, "Tent", Color.DARK_GRAY));
 	}
 		
 	@Override
@@ -162,6 +162,21 @@ public class Village  implements GameElement{
 	}	
 	void drawCircle(Graphics g, int x, int y, int r) {
 		g.drawOval(x - r, y - r, r * 2, r * 2);
+	}
+
+	
+	public Point assignBuildingLocation(Building b) {
+		//This method assigns a location for the new building. Does not apply the location to the building!
+		//TODO: Calculate free spot for building.
+		//TODO: See OrbisPartRandomiser from applet
+		Point p = new Point();
+		
+		Random rand = new Random();
+		p.x = this.x + rand.nextInt(10);
+		p.y = this.y + rand.nextInt(10);
+		
+		buildings.add(b);
+		return p;
 	}
 
 }

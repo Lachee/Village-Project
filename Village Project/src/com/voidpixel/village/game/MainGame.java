@@ -7,13 +7,11 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import com.voidpixel.village.building.Village;
 import com.voidpixel.village.main.*;
 import com.voidpixel.village.task.*;
-import com.voidpixel.village.task.global.TaskBuildVillage;
-import com.voidpixel.village.task.global.TaskGatherWood;
+import com.voidpixel.village.task.global.*;
 import com.voidpixel.village.world.World;
 
 public class MainGame {
@@ -62,11 +60,12 @@ public class MainGame {
 				
 		//Add all posible (and inital) tasks
 		addTask(new TaskBuildVillage());
+		addTask(new TaskBuildTent());
 		addTask(new TaskGatherWood());
 				
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 5; i++) {
 			people.add(new Person(this, 1 + i, 1));
-			requestTask(new TaskBuildVillage().getName());
+			requestTask(new TaskBuildTent().getName());
 		}
 		
 		//TODO: Implement the main feature of this program...

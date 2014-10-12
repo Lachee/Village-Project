@@ -11,8 +11,13 @@ public abstract class PersonTask {
 	
 	public PersonTask(String name, double priority) { this.name = name; this.priority = priority;}
 
-	public void onTaskStart(Person person) { workers++; requests--; if(requests < 0) requests = 0; }
-	public void onTaskEnd(Person person) { workers--; if(workers < 0) workers = 0;}
+	public void onTaskStart(Person person) { workers++; }
+	public void onTaskEnd(Person person) { workers--; if(workers < 0) workers = 0; }
+	
+	public void completeTask(Person person) {
+		person.endTask();
+		requests--; if(requests < 0) requests = 0;
+	}
 	
 	public void tick(MainGame game, Person person) {}
 	public String getName() { return name; }
@@ -29,4 +34,6 @@ public abstract class PersonTask {
 		PersonTask tsk = (PersonTask)obj;
 		return tsk.name == this.name;
 	}
+
+	public void onTaskChange(Person person, PersonTask task) { }
 }

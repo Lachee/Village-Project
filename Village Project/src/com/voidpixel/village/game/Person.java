@@ -2,14 +2,11 @@ package com.voidpixel.village.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Random;
 
+import com.voidpixel.village.task.*;
 import com.voidpixel.village.interfaces.*;
 import com.voidpixel.village.main.Camera;
-import com.voidpixel.village.task.PersonTask;
-import com.voidpixel.village.task.TaskStoreResources;
-import com.voidpixel.village.task.global.TaskGatherWood;
 import com.voidpixel.village.world.World;
 
 
@@ -101,7 +98,7 @@ public class Person  implements GameElement{
 	}
 	
 	public void changeTask(PersonTask task) {
-		endTask();
+		this.task.onTaskChange(this, task);
 		this.task = task;
 		this.task.onTaskStart(this);
 	}

@@ -63,7 +63,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	
 	public static void update() {
 		mouseScroll = 0;
-		
+
 		if(canvas != null && canvas.getMousePosition() != null)
 			mousePoint = canvas.getMousePosition();
 		
